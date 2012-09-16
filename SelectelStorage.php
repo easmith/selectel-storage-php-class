@@ -76,7 +76,7 @@ class SelectelStorage
 	 *
 	 * @return integer
 	 */
-	private function error($code, $message)
+	protected function error($code, $message)
 	{
 		if (self::$throwExcaptions) throw new SelectelStorageException($message, $code);
 		return $code;
