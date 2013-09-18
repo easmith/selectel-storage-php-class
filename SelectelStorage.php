@@ -471,7 +471,7 @@ class sCurl
 		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($this->ch, CURLOPT_HEADER, true);
 		curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, true);
+		curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($this->ch, CURLOPT_BINARYTRANSFER, true);		
 // TODO: big files
 // curl_setopt($this->ch, CURLOPT_RANGE, "0-100");
