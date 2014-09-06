@@ -10,10 +10,34 @@
  */
 
 class SCurl {
+
     static private $instance = null;
+    /**
+     * Curl resource
+     *
+     * @var null|resource
+     */
     private $ch = null;
+
+    /**
+     * Current URL
+     *
+     * @var string
+     */
     private $url = null;
-    private $result = null;
+
+    /**
+     * Last request result
+     *
+     * @var array
+     */
+    private $result = array();
+
+    /**
+     * Request params
+     *
+     * @var array
+     */
     private $params = array();
 
     /**

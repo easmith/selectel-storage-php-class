@@ -206,7 +206,6 @@ class SelectelStorage
         $url = parse_url($this->url);
         $destin = $url['path'] . $destin;
         $headers = array_merge($this->token, array("Destination: {$destin}"));
-        print_r($headers);
         $info =	SCurl::init($this->url . $origin)
             ->setHeaders($headers)
             ->request("COPY")
