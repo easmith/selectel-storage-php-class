@@ -270,4 +270,54 @@ class SelectelStorage
 
         return new SelectelContainer($url, $this->token, $this->format, $this->getX($headers));
     }
+    
+    /**
+	 * Set X-Account-Meta-Temp-URL-Key for temp file download link generation. Run it once and use key forever.
+	 *
+	 * @param string $key
+	 *
+	 * @return integer
+	 */
+	public function setAccountMetaTempURLKey ($key)
+	{
+		$url = $this->url;
+		$headers = array_merge($this->token, array("X-Account-Meta-Temp-URL-Key: " . $key));
+		$res =	SCurl::init($url)
+					->setHeaders($headers)
+					->request("POST")
+					->getHeaders();
+
+		if (!in_array($res["HTTP-Code"], array(204)))
+			return $this->error($res ["HTTP-Code"], __METHOD__);
+		
+		return $res["HTTP-Code"];
+	}
+	
+	/**
+	 * Get temp file download link
+	 *
+	 * @param string $key X-Account-Meta-Temp-URL-Key specified by setAccountMetaTempURLKey method
+	 * @param string $path to file, including container name
+	 * @param integer $expires time in UNIX-format, after this time link will be voided
+	 * @param string $otherFileName custom filename if needed
+	 *
+	 * @return string
+	 */
+	public function getTempURL ($key, $path, $expires, $otherFileName=null)
+	{
+		$url = substr($this->url, 0, strlen($this->url)-1);
+		
+		$sig_body = "GET\n$expires\n$path";
+		
+		$sig = hash_hmac('sha1', $sig_body, $key);
+		
+		$res = $url . $path . '?temp_url_sig=' . $sig . '&temp_url_expires=' . $expires;
+		
+		if($otherFileName != null)
+		{
+			$res .= '&filename=' . urlencode($otherFileName);
+		}
+				
+		return $res;
+	}
 }
