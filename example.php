@@ -1,9 +1,6 @@
 <?php
 
-include_once 'src/SelectelStorage.php';
-include_once 'src/SCurl.php';
-include_once 'src/SelectelContainer.php';
-include_once 'src/SelectelStorageException.php';
+require_once ("vendor/autoload.php");
 
 try {
 	$selectelStorage = new SelectelStorage("User", "Pass");
