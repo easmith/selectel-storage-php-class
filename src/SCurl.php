@@ -157,7 +157,9 @@ class SCurl {
         $fp = fopen($file, "r");
         curl_setopt($this->ch, CURLOPT_INFILE, $fp);
         curl_setopt($this->ch, CURLOPT_INFILESIZE, filesize($file));
-        return $this->request('PUT');
+        $this->request('PUT');
+        fclose($fp);
+        return self::$instance;
     }
 
     /**
