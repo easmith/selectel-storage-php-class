@@ -57,7 +57,7 @@ class SelectelStorage
     public function __construct($user, $key, $format = null)
     {
         $header = SCurl::init("https://auth.selcdn.ru/")
-            ->setHeaders(array("X-Auth-User: {$user}", "X-Auth-Key: {$key}"))
+            ->setHeaders(array("Host: auth.selcdn.ru", "X-Auth-User: {$user}", "X-Auth-Key: {$key}"))
             ->request("GET")
             ->getHeaders();
 
