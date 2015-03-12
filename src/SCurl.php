@@ -62,7 +62,13 @@ class SCurl {
      */
     private function __construct($url)
     {
-        $this->ch = curl_init($url);
+        $this->setUrl($url);
+        $this->curlInit();
+    }
+
+    private function curlInit()
+    {
+        $this->ch = curl_init($this->url);
         curl_setopt($this->ch, CURLOPT_ENCODING, 'gzip,defalate');
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
@@ -72,7 +78,6 @@ class SCurl {
         curl_setopt($this->ch, CURLOPT_BINARYTRANSFER, true);
 // TODO: big files
 // curl_setopt($this->ch, CURLOPT_RANGE, "0-100");
-        $this->setUrl($url);
     }
 
     /**
@@ -109,6 +114,9 @@ class SCurl {
         $this->result['header'] = $this->parseHead($response[0]);
         unset($response[0]);
         $this->result['content'] = join("\r\n\r\n", $response);
+
+        // reinit
+        $this->curlInit();
 
         return self::$instance;
     }
