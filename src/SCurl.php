@@ -69,7 +69,7 @@ class SCurl {
     private function curlInit()
     {
         $this->ch = curl_init($this->url);
-        curl_setopt($this->ch, CURLOPT_ENCODING, 'gzip,defalate');
+        curl_setopt($this->ch, CURLOPT_ENCODING, 'gzip,deflate');
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_HEADER, true);
