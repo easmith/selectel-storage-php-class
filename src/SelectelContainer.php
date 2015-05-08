@@ -143,6 +143,26 @@ class SelectelContainer extends SelectelStorage
 
         return $info;
     }
+    
+    /**
+     * Upload binary string as file
+     *
+     * @param string $contents
+     * @param string|null $remoteFileName
+     * @return array
+     */
+    public function putFileContents($contents, $remoteFileName = null)
+    {
+        $info = SCurl::init($this->url . $remoteFileName)
+            ->setHeaders($this->token)
+            ->putFileContents($contents)
+            ->getInfo();
+
+        if (!in_array($info["http_code"], array(201)))
+            return $this->error($info["http_code"], __METHOD__);
+
+        return $info;
+    }
 
     /**
      * Set meta info for file
