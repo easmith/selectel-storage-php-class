@@ -169,6 +169,18 @@ class SCurl {
         fclose($fp);
         return self::$instance;
     }
+    
+    public function putFileContents($contents)
+    {
+        $temp = tmpfile();
+        fwrite($temp, $contents);
+        fseek($temp, 0);
+        curl_setopt($this->ch, CURLOPT_INFILE, $temp);
+        curl_setopt($this->ch, CURLOPT_INFILESIZE, strlen($contents));
+        $this->request('PUT');
+        fclose($temp);
+        return self::$instance;
+    }
 
     /**
      * Header Parser
