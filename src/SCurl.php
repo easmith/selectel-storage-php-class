@@ -2,7 +2,7 @@
 /**
  * Created 06.09.14 23:47 by PhpStorm.
  *
- * PHP version 5f
+ * PHP version 5
  *
  * @category selectel-storage-php-class
  * @package class_package
