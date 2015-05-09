@@ -2,7 +2,7 @@
 /**
  * Created 06.09.14 23:47 by PhpStorm.
  *
- * PHP version 5
+ * PHP version 5f
  *
  * @category selectel-storage-php-class
  * @package class_package
@@ -172,13 +172,13 @@ class SCurl {
     
     public function putFileContents($contents)
     {
-        $temp = tmpfile();
-        fwrite($temp, $contents);
-        fseek($temp, 0);
-        curl_setopt($this->ch, CURLOPT_INFILE, $temp);
+        $fp = fopen("php://temp", "r+");
+        fputs($fp, $contents);
+        rewind($fp);
+        curl_setopt($this->ch, CURLOPT_INFILE, $fp);
         curl_setopt($this->ch, CURLOPT_INFILESIZE, strlen($contents));
         $this->request('PUT');
-        fclose($temp);
+        fclose($fp);
         return self::$instance;
     }
 
