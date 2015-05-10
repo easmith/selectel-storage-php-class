@@ -169,6 +169,18 @@ class SCurl {
         fclose($fp);
         return self::$instance;
     }
+    
+    public function putFileContents($contents)
+    {
+        $fp = fopen("php://temp", "r+");
+        fputs($fp, $contents);
+        rewind($fp);
+        curl_setopt($this->ch, CURLOPT_INFILE, $fp);
+        curl_setopt($this->ch, CURLOPT_INFILESIZE, strlen($contents));
+        $this->request('PUT');
+        fclose($fp);
+        return self::$instance;
+    }
 
     /**
      * Header Parser
