@@ -272,6 +272,43 @@ class SelectelStorage
     }
     
     /**
+     * Upload  and extract archive
+     *
+     * @param string $archiveFileName The name of a local file
+     * @param string $remotePath The path to extract archive
+     * @return array
+     */
+    public function putArchive($archive, $path = null) {
+        $url = $this->url . $path . '?extract-archive=' . pathinfo($archive, PATHINFO_EXTENSION);
+        
+        
+        switch ($this->format){
+            case 'json':
+                $headers = array_merge($this->token, ['Accept: application/json']);
+                break;
+            case 'xml':
+                $headers = array_merge($this->token, ['Accept: application/xml']);
+                break;
+            default:
+                $headers = array_merge($this->token, ['Accept: text/plain']);
+                break;
+        }
+        
+        $info = SCurl::init($url)
+                ->setHeaders($headers)
+                ->putFile($archive)
+                ->getContent();
+
+        if ($this->format == '') {
+            return explode("\n", trim($info));
+        }
+        
+
+        return $this->format == 'json' ? json_decode($info, TRUE) : trim($info);
+    }
+
+    
+    /**
 	 * Set X-Account-Meta-Temp-URL-Key for temp file download link generation. Run it once and use key forever.
 	 *
 	 * @param string $key
