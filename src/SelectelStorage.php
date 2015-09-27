@@ -187,7 +187,7 @@ class SelectelStorage
             ->request("DELETE")
             ->getInfo();
 
-        if (!in_array($info["http_code"], array(204)))
+        if (!in_array($info["http_code"], array(204, 404)))
             return $this->error($info["http_code"], __METHOD__);
 
         return $info;
