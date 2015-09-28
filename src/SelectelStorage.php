@@ -102,7 +102,7 @@ class SelectelStorage
     {
         $result = array();
         foreach($headers as $key => $value)
-            if (stripos($key, "x-") === 0)
+            if (stripos($key, $prefix) === 0)
                 $result[$key] = $value;
         return $result;
     }
