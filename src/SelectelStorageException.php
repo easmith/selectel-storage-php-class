@@ -11,6 +11,6 @@ namespace easmith\selectel\storage;
  * @package class_package
  * @author Eugene Kuznetcov <easmith@mail.ru>
  */
-class SelectelStorageException extends Exception {
+class SelectelStorageException extends \Exception {
     
 }
