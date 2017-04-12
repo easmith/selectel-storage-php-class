@@ -1,5 +1,7 @@
 <?php
 
+namespace easmith\selectel\storage;
+
 /**
  * Selectel Storage Container PHP class
  *
