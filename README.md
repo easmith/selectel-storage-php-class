@@ -46,7 +46,7 @@ $fileList = $container->listFiles($limit = 10000, $marker = null, $prefix = null
 
 ### Put File
 ```php
-$res = $container->putFile(__FILE__, 'example.php');
+$res = $container->putFile(__FILE__, 'example.php',["Content-Type: text/html"]);
 ```
 
 ### File info

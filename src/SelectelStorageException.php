@@ -1,4 +1,7 @@
 <?php
+
+namespace easmith\selectel\storage;
+
 /**
  * Created 06.09.14 23:44 by PhpStorm.
  *
@@ -8,8 +11,6 @@
  * @package class_package
  * @author Eugene Kuznetcov <easmith@mail.ru>
  */
-
-class SelectelStorageException extends Exception
-{
-
+class SelectelStorageException extends \Exception {
+    
 }
