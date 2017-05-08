@@ -312,7 +312,7 @@ class SelectelStorage {
                 ->request("POST")
                 ->getHeaders();
 
-        if (!in_array($res["HTTP-Code"], array(204)))
+        if (!in_array($res["HTTP-Code"], array(202)))
             return $this->error($res ["HTTP-Code"], __METHOD__);
 
         return $res["HTTP-Code"];
