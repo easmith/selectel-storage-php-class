@@ -107,7 +107,7 @@ class SelectelContainer extends SelectelStorage
             'marker' => $marker,
             'prefix' => $prefix,
             'path' => $path,
-            'delimiter ' => $delimiter,
+            'delimiter' => $delimiter,
             'format' => (!in_array($format, $this->formats, true) ? $this->format : $format)
         );
 
