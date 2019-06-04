@@ -182,7 +182,8 @@ class SCurl
     {
         $result = array();
         $code = explode("\r\n", $head);
-        $result['HTTP-Code'] = intval(str_replace("HTTP/1.1", "", $code[0]));
+        preg_match('/HTTP.+ (.+)/', $code[0], $codeMatches);
+        $result['HTTP-Code'] = (int)$codeMatches[1];
         preg_match_all("/([A-z\-]+)\: (.*)\r\n/", $head, $matches, PREG_SET_ORDER);
         foreach ($matches as $match)
             $result[strtolower($match[1])] = $match[2];
