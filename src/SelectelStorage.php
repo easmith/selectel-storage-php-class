@@ -112,9 +112,11 @@ class SelectelStorage
     protected static function getX($headers, $prefix = 'x-')
     {
         $result = array();
-        foreach ($headers as $key => $value)
-            if (stripos($key, $prefix) === 0)
+        foreach ($headers as $key => $value) {
+            if (stripos($key, $prefix) === 0) {
                 $result[$key] = $value;
+            }
+        }
         return $result;
     }
 
@@ -141,8 +143,9 @@ class SelectelStorage
             ->request("GET")
             ->getContent();
 
-        if ($params['format'] == '')
+        if ($params['format'] == '') {
             return explode("\n", trim($cont));
+        }
 
         return trim($cont);
     }
@@ -164,8 +167,9 @@ class SelectelStorage
             ->request("PUT")
             ->getInfo();
 
-        if (!in_array($info["http_code"], array(201, 202)))
+        if (!in_array($info["http_code"], array(201, 202))) {
             return $this->error($info["http_code"], __METHOD__);
+        }
 
         return $this->getContainer($name);
     }
@@ -185,8 +189,9 @@ class SelectelStorage
             ->request("HEAD")
             ->getHeaders();
 
-        if (!in_array($headers["HTTP-Code"], array(204)))
+        if (!in_array($headers["HTTP-Code"], array(204))) {
             return $this->error($headers["HTTP-Code"], __METHOD__);
+        }
 
         return new SelectelContainer($url, $this->token, $this->format, $this->getX($headers));
     }
@@ -205,8 +210,9 @@ class SelectelStorage
             ->request("DELETE")
             ->getInfo();
 
-        if (!in_array($info["http_code"], array(204)))
+        if (!in_array($info["http_code"], array(204))) {
             return $this->error($info["http_code"], __METHOD__);
+        }
 
         return $info;
     }
@@ -235,8 +241,9 @@ class SelectelStorage
     public function setContainerHeaders($name, $headers)
     {
         $headers = $this->getX($headers, "X-Container-Meta-");
-        if (get_class($this) != 'SelectelStorage')
+        if (get_class($this) != 'SelectelStorage') {
             return 0;
+        }
 
         return $this->setMetaInfo($name, $headers);
     }
@@ -251,20 +258,22 @@ class SelectelStorage
      */
     protected function setMetaInfo($name, $headers)
     {
-        if (get_class($this) == 'SelectelStorage')
+        if (get_class($this) == 'SelectelStorage') {
             $headers = $this->getX($headers, "X-Container-Meta-");
-        elseif (get_class($this) == 'SelectelContainer')
+        } elseif (get_class($this) == 'SelectelContainer') {
             $headers = $this->getX($headers, "X-Container-Meta-");
-        else
+        } else {
             return 0;
+        }
 
         $info = SCurl::init($this->url . $name)
             ->setHeaders($headers)
             ->request("POST")
             ->getInfo();
 
-        if (!in_array($info["http_code"], array(204)))
+        if (!in_array($info["http_code"], array(204))) {
             return $this->error($info["http_code"], __METHOD__);
+        }
 
         return $info["http_code"];
     }
@@ -322,8 +331,9 @@ class SelectelStorage
             ->request("POST")
             ->getHeaders();
 
-        if (!in_array($res["HTTP-Code"], array(202)))
+        if (!in_array($res["HTTP-Code"], array(202))) {
             return $this->error($res ["HTTP-Code"], __METHOD__);
+        }
 
         return $res["HTTP-Code"];
     }

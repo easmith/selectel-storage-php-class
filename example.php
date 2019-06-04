@@ -7,15 +7,15 @@ try {
 
     echo "\n\nCreate Container:\n";
     $container = $selectelStorage->createContainer('selectel', array("X-Container-Meta-Type: public"));
-    print_r($container->getInfo());
+    // print_r($container->getInfo());
 
     echo "Containers list\n";
     $containerList = $selectelStorage->listContainers();
-    print_r($containerList);
+    // print_r($containerList);
 
     echo "\n\nContainer Info:\n";
     $cInfo = $selectelStorage->getContainer($containerList[0])->getInfo();
-    print_r($cInfo);
+    // print_r($cInfo);
 
     echo "\n\nCreate directory:\n";
     $container = $selectelStorage->getContainer($containerList[0]);
@@ -23,7 +23,7 @@ try {
 
     echo "\n\nDirectories:\n";
     $dirList = $container->listFiles($limit = 10000, $marker = null, $prefix = null, $path = "");
-    print_r($dirList);
+    // print_r($dirList);
 
     echo "\n\nPutting File:\n";
     $res = $container->putFile(__FILE__, 'example.php');
@@ -38,8 +38,7 @@ try {
     print_r($fileInfo);
 
     echo "\n\nGetting file (base64):\n";
-    $file = $container->getFile($fileList[0]);
-    $file['content'] = base64_encode($file['content']);
+    $file = $container->getFile($fileInfo['name']);
     print_r($file);
 
     echo "\n\nCopy: \n";
@@ -55,6 +54,7 @@ try {
     echo "\n\nAccountMetaTempURL: \n";
     $MetaTempURLKeyRes = $container->setAccountMetaTempURLKey("test");
     print_r($MetaTempURLKeyRes);
+    echo "\n\n";
 
 } catch (Exception $e) {
     print_r($e->getTrace());

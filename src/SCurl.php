@@ -14,21 +14,21 @@ namespace easmith\selectel\storage;
 class SCurl
 {
 
-    static private $instance = null;
+    private static $instance = null;
 
     /**
      * Curl resource
      *
      * @var null|resource
      */
-    private $ch = null;
+    private $ch;
 
     /**
      * Current URL
      *
      * @var string
      */
-    private $url = null;
+    private $url;
 
     /**
      * Last request result
@@ -75,7 +75,7 @@ class SCurl
      *
      * @return SCurl
      */
-    static function init($url)
+    public static function init($url)
     {
         if (self::$instance == null) {
             self::$instance = new SCurl($url);
@@ -88,7 +88,7 @@ class SCurl
      *
      * @param string $url URL
      *
-     * @return SCurl
+     * @return SCurl|null
      */
     public function setUrl($url)
     {
@@ -96,10 +96,16 @@ class SCurl
         return self::$instance;
     }
 
+    /**
+     * @param $file
+     * @return mixed
+     * @throws SelectelStorageException
+     */
     public function putFile($file)
     {
-        if (!file_exists($file))
+        if (!file_exists($file)) {
             throw new SelectelStorageException("File '{$file}' does not exist");
+        }
         $fp = fopen($file, "r");
         curl_setopt($this->ch, CURLOPT_INFILE, $fp);
         curl_setopt($this->ch, CURLOPT_INFILESIZE, filesize($file));
@@ -182,18 +188,22 @@ class SCurl
     {
         $result = array();
         $code = explode("\r\n", $head);
-        preg_match('/HTTP.+ (.+)/', $code[0], $codeMatches);
-        $result['HTTP-Code'] = (int)$codeMatches[1];
+        preg_match('/HTTP\/(.+) (\d+)/', $code[0], $codeMatches);
+
+        $result['HTTP-Version'] = $codeMatches[1];
+        $result['HTTP-Code'] = (int)$codeMatches[2];
         preg_match_all("/([A-z\-]+)\: (.*)\r\n/", $head, $matches, PREG_SET_ORDER);
-        foreach ($matches as $match)
+
+        foreach ($matches as $match) {
             $result[strtolower($match[1])] = $match[2];
+        }
 
         return $result;
     }
 
     public function putFileContents($contents)
     {
-        $fp = fopen("php://temp", "r+");
+        $fp = fopen("php://temp", "rb+");
         fputs($fp, $contents);
         rewind($fp);
         curl_setopt($this->ch, CURLOPT_INFILE, $fp);
@@ -273,8 +283,9 @@ class SCurl
      */
     public function getInfo($info = null)
     {
-        if (!is_null($info))
+        if (!is_null($info)) {
             $this->result['info'][$info];
+        }
         return $this->result['info'];
     }
 

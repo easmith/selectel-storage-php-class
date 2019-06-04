@@ -14,9 +14,9 @@
         "source": "https://github.com/easmith/selectel-storage-php-class"
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4"
     },
-    "version": "1.0.2",
+    "version": "1.0.3",
     "autoload": {
         "psr-4": {
             "easmith\\selectel\\storage\\": "src"

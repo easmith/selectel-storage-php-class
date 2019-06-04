@@ -24,28 +24,30 @@ class SelectelContainer extends SelectelStorage
         $this->url = $url . "/";
         $this->token = $token;
         $this->format = (!in_array($format, $this->formats, true) ? $this->format : $format);
-        $this->info = (count($info) == 0 ? $this->getInfo(true) : $info);
+        $this->info = (count($info) === 0 ? $this->getInfo(true) : $info);
     }
 
     /**
      * Getting container info
      *
-     * @param boolean $refresh Refres? Default false
+     * @param boolean $refresh Refresh? Default false
      *
      * @return array
      */
     public function getInfo($refresh = false)
     {
-        if (!$refresh)
+        if (!$refresh) {
             return $this->info;
+        }
 
         $headers = SCurl::init($this->url)
             ->setHeaders($this->token)
             ->request("HEAD")
             ->getHeaders();
 
-        if (!in_array($headers["HTTP-Code"], array(204)))
+        if (!in_array($headers["HTTP-Code"], array(204))) {
             return $this->error($headers["HTTP-Code"], __METHOD__);
+        }
 
         return $this->info = $this->getX($headers);
     }
@@ -95,7 +97,7 @@ class SelectelContainer extends SelectelStorage
      * @param string $marker Marker
      * @param string $prefix Prefix
      * @param string $path Path
-     * @param string $delimiter Delemiter
+     * @param string $delimiter Delimiter
      * @param string $format Format
      *
      * @return array|string
@@ -117,8 +119,9 @@ class SelectelContainer extends SelectelStorage
             ->request("GET")
             ->getContent();
 
-        if ($params['format'] == '')
+        if ($params['format'] == '') {
             return explode("\n", trim($res));
+        }
 
         return trim($res);
     }
@@ -133,16 +136,18 @@ class SelectelContainer extends SelectelStorage
      */
     public function putFile($localFileName, $remoteFileName = null, $headers = array())
     {
-        if (is_null($remoteFileName))
+        if (is_null($remoteFileName)) {
             $remoteFileName = array_pop(explode(DIRECTORY_SEPARATOR, $localFileName));
+        }
         $headers = array_merge($headers, $this->token);
         $info = SCurl::init($this->url . $remoteFileName)
             ->setHeaders($headers)
             ->putFile($localFileName)
             ->getInfo();
 
-        if (!in_array($info["http_code"], array(201)))
+        if (!in_array($info["http_code"], array(201))) {
             return $this->error($info["http_code"], __METHOD__);
+        }
 
         return $info;
     }
@@ -161,8 +166,9 @@ class SelectelContainer extends SelectelStorage
             ->putFileContents($contents)
             ->getInfo();
 
-        if (!in_array($info["http_code"], array(201)))
+        if (!in_array($info["http_code"], array(201))) {
             return $this->error($info["http_code"], __METHOD__);
+        }
 
         return $info;
     }
@@ -178,8 +184,9 @@ class SelectelContainer extends SelectelStorage
     public function setFileHeaders($name, $headers)
     {
         $headers = $this->getX($headers, "X-Container-Meta-");
-        if (get_class($this) != 'SelectelContainer')
+        if (get_class($this) != 'SelectelContainer') {
             return 0;
+        }
 
         return $this->setMetaInfo($name, $headers);
     }
