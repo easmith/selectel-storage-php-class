@@ -64,7 +64,10 @@ class SCurl
         curl_setopt($this->ch, CURLOPT_HEADER, true);
         curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($this->ch, CURLOPT_BINARYTRANSFER, true);
+        // Проверяем существование константы перед использованием для совместимости c php 8.4
+        if (defined('CURLOPT_BINARYTRANSFER')) {
+            curl_setopt($this->ch, CURLOPT_BINARYTRANSFER, true);
+        }
 // TODO: big files
 // curl_setopt($this->ch, CURLOPT_RANGE, "0-100");
     }
